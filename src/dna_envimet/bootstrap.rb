@@ -1,0 +1,23 @@
+module Envimet::EnvimetInx
+  # load sources
+  INSTALL_PATH = File.dirname(__FILE__)
+  require(File.join(INSTALL_PATH, 'inx', 'grid'))
+  require(File.join(INSTALL_PATH, 'inx', 'pixel'))
+  require(File.join(INSTALL_PATH, 'inx', 'preparation'))
+  require(File.join(INSTALL_PATH, 'inx', 'trasformation'))
+  require(File.join(INSTALL_PATH, 'inx', 'location'))
+  require(File.join(INSTALL_PATH, 'inx', 'command', 'create_command'))
+  require(File.join(INSTALL_PATH, 'inx', 'command', 'edit_command'))
+  require(File.join(INSTALL_PATH, 'inx', 'command', 'inx_command'))
+  require(File.join(INSTALL_PATH, 'inx', 'command', 'utility_command'))
+  require(File.join(INSTALL_PATH, 'inx', 'inx'))
+  require(File.join(INSTALL_PATH, 'interface', 'grid_tool'))
+  require(File.join(INSTALL_PATH, 'interface', 'prompts'))
+  require(File.join(INSTALL_PATH, 'interface', 'inspector'))
+  require(File.join(INSTALL_PATH, 'interface', 'grid_observer'))
+  require(File.join(INSTALL_PATH, 'interface', 'selection_observer'))
+  require(File.join(INSTALL_PATH, 'interface', 'app_observer'))
+  require(File.join(INSTALL_PATH, 'interface', 'entities_observer'))
+  require(File.join(INSTALL_PATH, 'shared'))
+  require(File.join(INSTALL_PATH, 'ui_loader'))
+end
