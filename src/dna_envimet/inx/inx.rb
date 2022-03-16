@@ -87,9 +87,9 @@ module Envimet::EnvimetInx
           "grids-I" => num_x, 
           "grids-J" => num_y, 
           "grids-Z" => grid_Z, 
-          "dx" => grid.dim_x, 
-          "dy" => grid.dim_y, 
-          "dz-base" => grid.dim_z, 
+          "dx" => grid.dim_x.to_m, 
+          "dy" => grid.dim_y.to_m, 
+          "dz-base" => grid.dim_z.to_m, 
           "useTelescoping_grid" => useTelescoping_grid, 
           "useSplitting" => useSplitting, 
           "verticalStretch" => verticalStretch, 
@@ -103,13 +103,16 @@ module Envimet::EnvimetInx
           "soilProfileB" => "000000"
         }
         location_data = {
-          "modelRotation" => grid.other_info[:rotation], 
+          "modelRotation" => grid.other_info[:rotation].nil? ? \
+            0.0 : grid.other_info[:rotation], 
           "projectionSystem" => "UTM", 
           "realworldLowerLeft_X" => location.utm[:x], 
           "realworldLowerLeft_Y" => location.utm[:y], 
           "locationName" => location.name, 
-          "location_Longitude" => location.longitude, 
-          "location_Latitude" => location.latitude, 
+          "location_Longitude" => location.longitude.nil? ? \
+            0.0 : location.longitude, 
+          "location_Latitude" => location.latitude.nil? ? \
+            0.0 : location.latitude,
           "locationTimeZone_Name" => " ", 
           "locationTimeZone_Longitude" => location.reference_longitude 
         }

@@ -10,6 +10,7 @@ A plugin for Sketchup to write *.inx files for ENVI_MET.
 - Read geo-location of Sketchup
 - Export INX model
 - Standalone system library
+- Convert automatically to meters other units of measure
 
 ## Limits:
 - 2.5D Modeling only
