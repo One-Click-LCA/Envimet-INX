@@ -3,6 +3,9 @@ A plugin for Sketchup to write *.inx files for ENVI_MET.
 
 ![image](https://github.com/ENVI-coding/Envimet-INX/blob/main/envimet-inx.PNG)
 
+# Docs
+Please, see [WiKi](https://github.com/ENVI-coding/Envimet-INX/wiki)
+
 # SKP Versions
 * SKP 2022
 
