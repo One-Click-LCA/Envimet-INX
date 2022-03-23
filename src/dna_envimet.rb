@@ -19,12 +19,12 @@
 #
 # @license GPL-3.0 <https://spdx.org/licenses/AGPL-3.0-only.html>
 # --------------------------------------------------------------------
-require 'sketchup'
-require 'extensions'
+Sketchup.require 'sketchup'
+Sketchup.require 'extensions'
 
 module Envimet
   module EnvimetInx
-    ENVIMET_VERSION = "v2.0.0"
+    ENVIMET_VERSION = "2.0.1"
 
     unless file_loaded?(__FILE__)
       PLUGIN_ID = File.basename(__FILE__, ".rb")

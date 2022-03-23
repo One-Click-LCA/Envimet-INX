@@ -270,10 +270,10 @@ module Envimet::EnvimetInx
     # georeferenced check
     unless model.georeferenced?
       UI.messagebox("Model is not georeferenced.\n" \
-      "Please,fix location with Envimet Space.")
+      "Please, fix location with Envimet Space.")
     else
       UI.messagebox("Model is georeferenced.\n" \
-        "Please, Check only if reference longitude " \
+        "Please, check only if reference longitude " \
         "is correct with Envimet Space.")
     end
 

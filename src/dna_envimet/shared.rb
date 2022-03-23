@@ -1,5 +1,5 @@
 module Envimet::EnvimetInx
-  require "JSON" unless defined? JSON
+  Sketchup.require "JSON" unless defined? JSON
 
   DICTIONARY = "ENVIMET"
 

@@ -1,7 +1,7 @@
 module Envimet::EnvimetInx
   module IO
     class Inx
-      require "rexml/document"
+      Sketchup.require "rexml/document"
       include REXML
 
       def create_childs(root, 
