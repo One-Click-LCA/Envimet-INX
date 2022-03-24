@@ -8,6 +8,7 @@ Please, see [WiKi](https://github.com/ENVI-coding/Envimet-INX/wiki)
 
 # SKP Versions
 * SKP 2022
+* SKP 2021
 
 ## Setup:
 Install *rbz from [Sketchup Extension Warehouse](https://extensions.sketchup.com/extension/e99e6c45-22c1-4c43-9c2e-d6d326925763/envimet-inx).
