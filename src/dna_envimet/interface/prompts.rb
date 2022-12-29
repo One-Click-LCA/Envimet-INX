@@ -127,6 +127,7 @@ module Envimet::EnvimetInx
         "Roof Material", 
         "Green Wall Material", 
         "Green Roof Material",
+        "BSF (Y/N)",
         "[OPTIONAL] Custom Wall Material Code (E.g. 0000CM)",
         "[OPTIONAL] Custom Roof Material Code (E.g. 0000CM)",
         "[OPTIONAL] Custom Green Wall Material Material Code (E.g. 0000CM)",
@@ -139,17 +140,19 @@ module Envimet::EnvimetInx
         "DEFAULT", 
         "DEFAULT",
         "DEFAULT",
+        "N",
         "000000",
         "000000",
         "000000",
-        "000000"
+        "000000",
       ]
       
       options = ["", 
         wall.join("|"), 
         wall.join("|"), 
         greening.join("|"), 
-        greening.join("|")
+        greening.join("|"),
+        "Y|N"
       ]
 
       input = UI.inputbox(prompts, 
@@ -159,7 +162,7 @@ module Envimet::EnvimetInx
         MB_OK)
 
       if input && !input.join.empty?
-        n, w, r, gw, gr, cw, cr, cgw, cgr = input
+        n, w, r, gw, gr, ibsf, cw, cr, cgw, cgr = input
 
         w = is_custom_code_correct?(cw) ? cw \
           : Envimet::EnvimetInx.preparation.materials[keyword][w]
@@ -170,9 +173,11 @@ module Envimet::EnvimetInx
         gr = is_custom_code_correct?(cgr) ? cgr \
           : Envimet::EnvimetInx.preparation.materials[gkeyword][gr]
 
+        bsf = (ibsf == "Y") ? "1" : "0"
+
         UI.messagebox("[ENVIMET]: Building #{n} #{w} #{r} #{gw} #{gr}")
 
-        return n, w, r, gw, gr
+        return n, w, r, gw, gr, bsf
       end
     end
 

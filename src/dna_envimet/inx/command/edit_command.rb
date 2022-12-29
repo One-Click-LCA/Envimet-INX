@@ -34,7 +34,7 @@ module Envimet::EnvimetInx
     input = Prompt.show_building_prompt
     return if input.to_a.empty?
     
-    name, wall, roof, gwall, groof = input
+    name, wall, roof, gwall, groof, bsf = input
     
     model.start_operation("Edit Building", true)
     # Set group properties
@@ -44,6 +44,7 @@ module Envimet::EnvimetInx
       obj.set_attribute(DICTIONARY, :roof, roof)
       obj.set_attribute(DICTIONARY, :gwall, gwall)
       obj.set_attribute(DICTIONARY, :groof, groof)
+      obj.set_attribute(DICTIONARY, :bsf, bsf)
     end
     model.selection.clear
     model.commit_operation

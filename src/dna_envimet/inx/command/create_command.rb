@@ -45,7 +45,7 @@ module Envimet::EnvimetInx
     end
     
     model.start_operation("Create Building", true)
-    name, wall, roof, gwall, groof = input
+    name, wall, roof, gwall, groof, bsf = input
 
     # Set group properties
     group = model.entities.add_group(objs)
@@ -55,6 +55,7 @@ module Envimet::EnvimetInx
     group.set_attribute(DICTIONARY, :roof, roof)
     group.set_attribute(DICTIONARY, :gwall, gwall)
     group.set_attribute(DICTIONARY, :groof, groof)
+    group.set_attribute(DICTIONARY, :bsf, bsf)
     group.set_attribute(DICTIONARY, :ID, max_id)
     
     model.commit_operation

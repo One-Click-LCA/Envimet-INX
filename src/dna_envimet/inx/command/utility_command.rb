@@ -93,11 +93,13 @@ module Envimet::EnvimetInx
         roof = grp.get_attribute(DICTIONARY, :roof)
         gwall = grp.get_attribute(DICTIONARY, :gwall)
         groof = grp.get_attribute(DICTIONARY, :groof)
+        bsf = grp.get_attribute(DICTIONARY, :bsf)
         details = [
           "WALL: #{wall}", 
           "ROOF: #{roof}", 
           "GREEN WALL: #{gwall}", 
-          "GREEN ROOF: #{groof}"
+          "GREEN ROOF: #{groof}",
+          "BSF: #{bsf}"
         ].join(" | ") 
         tot_buildings += 1
       when "grid"

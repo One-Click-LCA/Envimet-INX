@@ -216,6 +216,7 @@ module Envimet::EnvimetInx
               ? " " : bld.get_attribute("ENVIMET", :gwall)
             uuid = bld.get_attribute("ENVIMET", :ID)
             name = bld.get_attribute("ENVIMET", :name)
+            bsf = bld.get_attribute("ENVIMET", :bsf)
 
             building_info = { 
               "BuildingInternalNr" => uuid, 
@@ -223,7 +224,8 @@ module Envimet::EnvimetInx
               "BuildingWallMaterial" => wall_material, 
               "BuildingRoofMaterial" => roof_material, 
               "BuildingFacadeGreening" => green_wall, 
-              "BuildingRoofGreening" => green_roof
+              "BuildingRoofGreening" => green_roof,
+              "ObserveBPS" => bsf
             }
             create_childs(root, "Buildinginfo", building_info)
           end
