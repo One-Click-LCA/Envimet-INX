@@ -230,6 +230,7 @@ module Envimet::EnvimetInx
       group.set_attribute(DICTIONARY, :dim_y, grid.dim_y.to_m)
       group.set_attribute(DICTIONARY, :dim_z, grid.dim_z.to_m)
       group.set_attribute(DICTIONARY, :bounds, group.bounds.diagonal)
+      group.set_attribute(DICTIONARY, :min_z, group.bounds.min.z)
       group.set_attribute(DICTIONARY, :telescope, 
         grid.other_info[:telescope])
         group.set_attribute(DICTIONARY, :rotation, 
