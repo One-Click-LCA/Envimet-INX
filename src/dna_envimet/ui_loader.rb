@@ -18,7 +18,7 @@ module Envimet::EnvimetInx
       activate_grid_tool
     end
     cmd.tooltip = "Create Envimet Grid"
-    cmd.status_bar_text = "Use this command to create Envimet Grid." \
+    cmd.status_bar_text = "Create Envimet Grid." \
     "\nFollow instructions in status bar."
     cmd.small_icon = cmd.large_icon = "res/icon/grid.png"
     toolbar = toolbar.add_item(cmd)
@@ -28,8 +28,7 @@ module Envimet::EnvimetInx
       create_building
     end
     cmd.tooltip = "Create Building"
-    cmd.status_bar_text = "Use this command to create buildings." \
-    "\n1. Select skp objects\n2. Click on this command."
+    cmd.status_bar_text = "Create buildings."
     cmd.small_icon = cmd.large_icon = "res/icon/building.png"
     toolbar = toolbar.add_item(cmd)
 
@@ -38,9 +37,7 @@ module Envimet::EnvimetInx
       create_soil
     end
     cmd.tooltip = "Create Soil"
-    cmd.status_bar_text = "Use this command to create soils." \
-    "\n1. Select skp components\n2. Click on this command.\n"
-    ""
+    cmd.status_bar_text = "Create soils."
     cmd.small_icon = cmd.large_icon = "res/icon/soil.png"
     toolbar = toolbar.add_item(cmd)
 
@@ -49,9 +46,7 @@ module Envimet::EnvimetInx
       create_simple_plant
     end
     cmd.tooltip = "Create Simple plant"
-    cmd.status_bar_text = "Use this command to create simple plants." \
-    "\n1. Select skp components\n2. Click on this command.\n"
-    ""
+    cmd.status_bar_text = "Create simple plants."
     cmd.small_icon = cmd.large_icon = "res/icon/plant2d.png"
     toolbar = toolbar.add_item(cmd)
 
@@ -60,9 +55,7 @@ module Envimet::EnvimetInx
       create_source
     end
     cmd.tooltip = "Create Source"
-    cmd.status_bar_text = "Use this command to create sources." \
-    "\n1. Select skp components\n2. Click on this command.\n"
-    ""
+    cmd.status_bar_text = "Create sources."
     cmd.small_icon = cmd.large_icon = "res/icon/source.png"
     toolbar = toolbar.add_item(cmd)
 
@@ -71,9 +64,7 @@ module Envimet::EnvimetInx
       create_plant3d
     end
     cmd.tooltip = "Create Plant3d"
-    cmd.status_bar_text = "Use this command to create plant3ds." \
-    "\n1. Select skp components\n2. Click on this command.\n"
-    ""
+    cmd.status_bar_text = "Create plant3ds."
     cmd.small_icon = cmd.large_icon = "res/icon/plant3d.png"
     toolbar = toolbar.add_item(cmd)
 
@@ -82,9 +73,7 @@ module Envimet::EnvimetInx
       create_terrain
     end
     cmd.tooltip = "Create Terrain"
-    cmd.status_bar_text = "Use this command to create terrain (DEM)." \
-    "\n1. Select skp components\n2. Click on this command.\n"
-    ""
+    cmd.status_bar_text = "Create terrain (DEM)."
     cmd.small_icon = cmd.large_icon = "res/icon/terrain.png"
     toolbar = toolbar.add_item(cmd)
 
@@ -93,9 +82,7 @@ module Envimet::EnvimetInx
       create_receptor
     end
     cmd.tooltip = "Create Receptor"
-    cmd.status_bar_text = "Use this command to create a receptor." \
-    "\n1. Select just one skp component\n2. Click on this command.\n"
-    ""
+    cmd.status_bar_text = "Create a receptor."
     cmd.small_icon = cmd.large_icon = "res/icon/receptor.png"
     toolbar = toolbar.add_item(cmd)
 
@@ -108,9 +95,7 @@ module Envimet::EnvimetInx
       edit_grid_rotation
     end
     cmd.tooltip = "Edit Grid rotation"
-    cmd.status_bar_text = "Use this command to edit grid rotation." \
-    "\n1. Select groups\n2. Click on this command.\nIt accepts only" \
-    " Envimet::EnvimetInx entities and it filters grids."
+    cmd.status_bar_text = "Edit grid orientation (Envimet North)."
     cmd.small_icon = cmd.large_icon = "res/icon/rotation.png"
     toolbar = toolbar.add_item(cmd)
 
@@ -119,9 +104,7 @@ module Envimet::EnvimetInx
       edit_building
     end
     cmd.tooltip = "Edit Building"
-    cmd.status_bar_text = "Use this command to edit buildings." \
-    "\n1. Select groups\n2. Click on this command.\nIt accepts only" \
-    " Envimet::EnvimetInx entities and it filters buildings."
+    cmd.status_bar_text = "Edit buildings metadata."
     cmd.small_icon = cmd.large_icon = "res/icon/edit_building.png"
     toolbar = toolbar.add_item(cmd)
 
@@ -129,9 +112,7 @@ module Envimet::EnvimetInx
       edit_soil
     end
     cmd.tooltip = "Edit Soil"
-    cmd.status_bar_text = "Use this command to edit soils." \
-    "\n1. Select groups\n2. Click on this command.\nIt accepts only" \
-    " Envimet::EnvimetInx entities and it filters soils."
+    cmd.status_bar_text = "Edit soils metadata."
     cmd.small_icon = cmd.large_icon = "res/icon/edit_soil.png"
     toolbar = toolbar.add_item(cmd)
 
@@ -139,9 +120,7 @@ module Envimet::EnvimetInx
       edit_simple_plant
     end
     cmd.tooltip = "Edit Simple plant"
-    cmd.status_bar_text = "Use this command to edit simple plants." \
-    "\n1. Select groups\n2. Click on this command.\nIt accepts only" \
-    " Envimet::EnvimetInx entities and it filters simple plants."
+    cmd.status_bar_text = "Edit simple plants metadata."
     cmd.small_icon = cmd.large_icon = "res/icon/edit_plant2d.png"
     toolbar = toolbar.add_item(cmd)
 
@@ -149,9 +128,7 @@ module Envimet::EnvimetInx
       edit_plant3d
     end
     cmd.tooltip = "Edit Plant3d"
-    cmd.status_bar_text = "Use this command to edit plant3d." \
-    "\n1. Select groups\n2. Click on this command.\nIt accepts only" \
-    " Envimet::EnvimetInx entities and it filters plant3d."
+    cmd.status_bar_text = "Edit plant3d metadata."
     cmd.small_icon = cmd.large_icon = "res/icon/edit_plant3d.png"
     toolbar = toolbar.add_item(cmd)
 
@@ -159,9 +136,7 @@ module Envimet::EnvimetInx
       edit_source
     end
     cmd.tooltip = "Edit Source"
-    cmd.status_bar_text = "Use this command to edit source." \
-    "\n1. Select groups\n2. Click on this command.\nIt accepts only" \
-    " Envimet::EnvimetInx entities and it filters source."
+    cmd.status_bar_text = "Edit source metadata."
     cmd.small_icon = cmd.large_icon = "res/icon/edit_source.png"
     toolbar = toolbar.add_item(cmd)
 
@@ -171,10 +146,7 @@ module Envimet::EnvimetInx
       delete_envimet_object 
     end
     cmd.tooltip = "Delete Envimet Object"
-    cmd.status_bar_text = "Use this command to delete " \
-    "Envimet objects.\nOnly Envimet object will be" \
-    " deleted and not Sketchup geometries. Except envimet grids." \
-    "\n1. Select envimet object to delete\n2. Click on this command."
+    cmd.status_bar_text = "Delete metadata of Envimet objects."
     cmd.small_icon = cmd.large_icon = "res/icon/delete.png"
     toolbar = toolbar.add_item(cmd)
 
@@ -182,9 +154,7 @@ module Envimet::EnvimetInx
       display_inspector
     end
     cmd.tooltip = "Info Envimet Object"
-    cmd.status_bar_text = "Use this command to get information" \
-    "about Envimet objects.\nYou can also use it to check if " \
-    "Envimet objects are active (see. SKPINX)."
+    cmd.status_bar_text = "Get information about Envimet objects."
     cmd.small_icon = cmd.large_icon = "res/icon/info.png"
     toolbar = toolbar.add_item(cmd)
 
@@ -192,9 +162,7 @@ module Envimet::EnvimetInx
       select_by_type
     end
     cmd.tooltip = "Search by type"
-    cmd.status_bar_text = "Use this command to get information" \
-    "about Envimet objects.\nYou can also use it to check if " \
-    "Envimet objects are active (see. SKPINX)."
+    cmd.status_bar_text = "Select Envimet objects by type."
     cmd.small_icon = cmd.large_icon = "res/icon/search.png"
     toolbar = toolbar.add_item(cmd)
     
@@ -209,7 +177,7 @@ module Envimet::EnvimetInx
       model.commit_operation
     end
     cmd.tooltip = "Write Envimet Model"
-    cmd.status_bar_text = "Use this command to write envimet" \
+    cmd.status_bar_text = "Write envimet" \
     " model file on your machine."
     cmd.small_icon = cmd.large_icon = "res/icon/inx.png"
     toolbar = toolbar.add_item(cmd)
