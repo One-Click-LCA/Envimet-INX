@@ -1,19 +1,37 @@
 module Envimet::EnvimetInx
   module Prompt
 
+    def self.get_grid_selection
+      prompts = [
+        "Type",
+      ]
+
+      defaults = [
+        "equidistant"
+      ]
+      
+      grid_type = Geometry::Grid::GRID_TYPE.values
+
+      options = [grid_type.join("|")]
+
+      input = UI.inputbox(prompts, 
+        defaults,
+        options, 
+        "Select Grid Type", 
+        MB_OK)
+      
+      input.first if input && !input.join.empty? 
+    end
+
     # UI of the grid
     # @param bbox [Array] min point and max point
     # @param type [String] grid type to use 1, 2 or 3
     # @return [Array, Hash] min point, max point, grid info 
     def self.get_grid_by_prompt(bbox, type)
       message = nil
-      
-      # 1 = equidistant
-      # 2 = telescoping
-      # 3 = combined
-
       others = nil
-      if type == "1"
+
+      if type == "equidistant"
         prompts = [
           "Num Z cells", 
           "Dim X(m)", 
@@ -37,9 +55,9 @@ module Envimet::EnvimetInx
           }
           return bbox, others
         end
-      elsif type == "2"
+      elsif type == "telescope"
         message = "Create Telescope Grid"
-      elsif type == "3"
+      elsif type == "combined"
         message = "Create Combined Grid"
       end
 

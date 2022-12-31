@@ -4,9 +4,9 @@ module Envimet::EnvimetInx
 
       FIRST_CELLS = 5
       GRID_TYPE = { 
-        "1" => :equidistant, 
-        "2" => :telescope, 
-        "3" => :combined 
+        "equidistant" => :equidistant, 
+        "telescope" => :telescope, 
+        "combined" => :combined 
       }
 
       attr_reader :dim_x, :dim_y, :dim_z
@@ -15,8 +15,8 @@ module Envimet::EnvimetInx
       def initialize(bbox, configuration)
 
         values = {
-            start_telescope_height: nil,
-            telescope: nil
+          start_telescope_height: nil,
+          telescope: nil
         }
 
         values.merge!(configuration)
@@ -97,13 +97,13 @@ module Envimet::EnvimetInx
       def set_sequence
         # based on type get the sequence
         case (other_info[:grid_type])
-        when GRID_TYPE["1"]
+        when GRID_TYPE["equidistant"]
           other_info[:sequence] = get_equidistant_sequence(
             other_info[:num_z]).map(&:to_f)
-        when GRID_TYPE["2"]
+        when GRID_TYPE["telescope"]
           other_info[:sequence] = get_telescope_sequence(
             other_info[:num_z]).map(&:to_f)
-        when GRID_TYPE["3"]
+        when GRID_TYPE["combined"]
           other_info[:sequence] = get_combined_sequence(
             other_info[:num_z]).map(&:to_f)
         else

@@ -1,9 +1,10 @@
 module Envimet::EnvimetInx
   class GridTool
     def activate
-      @points = []
-      @mouse_pt = Sketchup::InputPoint.new
+      @mouse_ip = Sketchup::InputPoint.new
+      @picked_first_ip = Sketchup::InputPoint.new
       @boundary_box = nil
+
       update_ui
     end
 
@@ -16,106 +17,105 @@ module Envimet::EnvimetInx
       view.invalidate
     end
 
+    def suspend(view)
+      view.invalidate
+    end
+
     def onCancel(reason, view)
       reset_tool
       view.invalidate
     end
 
     def onMouseMove(flags, x, y, view)
-      update_ui
+      if picked_first_point?
+        @mouse_ip.pick(view, x, y, @picked_first_ip)
+      else
+        @mouse_ip.pick(view, x, y)
+      end
+      view.tooltip = @mouse_ip.tooltip if @mouse_ip.valid?
       view.invalidate
     end
 
     def onLButtonDown(flags, x, y, view)
-      if @points.length == 0
-        @mouse_pt.pick(view, x, y)
-        @points << @mouse_pt.position if is_valid_pt?(@mouse_pt)
-      elsif @points.length < 2
-        @points << @mouse_pt.position if @mouse_pt.pick(view, 
-          x, y, @mouse_pt) && is_valid_pt?(@mouse_pt)
+      if picked_first_point?
+
+        set_bbox_from_points(picked_points)
+        
+        selection = Prompt.get_grid_selection
+        if selection.nil?
+          update_ui
+          view.invalidate
+          return
+        end
+
+        Envimet::EnvimetInx.create_grid(@boundary_box, 
+          selection)
+
+        reset_tool
+      else
+        @picked_first_ip.copy!(@mouse_ip)
       end
+
       update_ui
       view.invalidate
     end
 
     CURSOR_POINT = UI.create_cursor(File.join(PLUGIN_DIR, 
       "res/tool_icon.png"), 0, 0)
-
+    
     def onSetCursor
       UI.set_cursor(CURSOR_POINT)
     end
 
-    def getExtents
-      bb = Geom::BoundingBox.new
-      bb.add(@points) unless @points.empty?
-      bb
-    end
-
     def draw(view)
       draw_preview(view)
-      @mouse_pt.draw(view) if @mouse_pt.display?
+      @mouse_ip.draw(view) if @mouse_ip.display?
     end
 
-    def onUserText(text, view)
-      begin
-        Envimet::EnvimetInx.create_grid(@boundary_box, 
-          text) if is_input_text_correct?(text)
-      rescue ArgumentError
-        UI.messagebox("Invalid integer." \
-          "Type one of following integer: 1 = Equidistant; " \
-          "2 = Telescopic; 3 = Combined.")
-      end
+    def getExtents
+      bounds = Geom::BoundingBox.new
+      bounds.add(picked_points) if picked_points
+      bounds
     end
 
     private
 
     def update_ui
-      if @points.empty?
-        Sketchup.status_text = "Select first point."
-      elsif @points.size == 1
-        Sketchup.status_text = "Select second point."
-      elsif @points.size == 2
-        Sketchup.status_text = "Select grid type. Type one" \
-        " of following integer: 1 = Equidistant; 2 = Telescopic; 3 = Combined."
+      if picked_first_point?
+        Sketchup.status_text = 'Select end point.'
+      else
+        Sketchup.status_text = 'Select start point.'
       end
     end
 
-    def is_input_text_correct?(text)
-      text.size == 1 && ["1", "2", "3"].any?(text)
-    end
-
     def reset_tool
-      @mouse_pt.clear
-      @points = []
-      @boundary_box = nil
+      @picked_first_ip.clear
       update_ui
     end
 
-    def is_valid_pt?(input_point)
-      input_point.valid?
+    def picked_first_point?
+      @picked_first_ip.valid?
+    end
+
+    def picked_points
+      points = []
+      points << @picked_first_ip.position if picked_first_point?
+      points << @mouse_ip.position if @mouse_ip.valid?
+      points
     end
 
     def draw_preview(view)
-      pts = @points
-      color = "red"
-      style = 1
-      size = 10
-      pts.each { |pt| view.draw_points(pt, size, style, color) }
-      return unless pts.size == 2
+      points = picked_points
+      return unless points.size == 2
 
-      view.drawing_color = Sketchup::Color.new(255, 0, 0, 64)
-      view.line_width = 2
-      view.line_stipple = "_"
-      pt1 = pts.first
-      pt2 = Geom::Point3d.new(pts.last.x, pts.first.y, 0)
-      pt3 = pts.last
-      pt4 = Geom::Point3d.new(pts.first.x, pts.last.y, 0)
-
-      view.draw(GL_LINE_LOOP, [pt1, pt2, pt3, pt4])
-
-      set_bbox_from_points([pt1, pt2, pt3, pt4])
-
-      view.draw(GL_LINES, [pt1, pt3])
+      if points.size == 2
+        view.drawing_color = Sketchup::Color.new(255, 0, 0, 64)
+        view.line_width = 2
+        view.line_stipple = "_"
+        pt1, pt2 = points
+        view.draw(GL_LINE_LOOP, [[pt1.x, pt1.y], 
+          [pt2.x, pt1.y], [pt2.x, pt2.y], [pt1.x, pt2.y]])
+      end
     end
 
     def set_bbox_from_points(pts)
