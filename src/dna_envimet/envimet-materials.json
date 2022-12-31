@@ -1,5 +1,5 @@
 {
-    "envimet-lib-version": "5.0.2",
+    "envimet-lib-version": "5.1.0",
     "building": {
         "DEFAULT": "000000",
         "PASSIVE WALL - GOOD INSULATION ": "0100F1",
@@ -58,7 +58,7 @@
         "ROOFING: TERRACOTTA LEGACY": "0000R2",
         "HEAT PROTECTION GLASS (ONE AIR LAYER) LEGACY": "0000GH",
         "WETROOF LEGACY": "0000WR",
-        "SHADING PLEXIGLASS LEGACY": "0000SG"
+        "SHADING PLEXIGLASS LEGACY": "0000SG"      
     },
     "greening": {
         "DEFAULT": " ",
@@ -107,7 +107,8 @@
         "BASALT BRICK ROAD LEGACY": "0000BA",
         "BASALT BRICK ROAD ": "0100BA",
         "WOOD PLANKS LEGACY": "0000WD",
-        "WOOD PLANKS ": "0100WD"
+        "WOOD PLANKS ": "0100WD",
+        "DARKER WOOD PLANKS ": "0200WD"
     },
     "simple_plant": {
         "DEFAULT": "0000XX",
