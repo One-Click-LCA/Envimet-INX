@@ -137,24 +137,42 @@ module Envimet::EnvimetInx
     model.selection.clear
     model.commit_operation
   end
-
-  # Edit Grid rotation
+  
+  # Edit Grid
   # @example
-  #   Envimet::EnvimetInx.edit_grid_rotation
-  def self.edit_grid_rotation
+  #   Envimet::EnvimetInx.edit_grid
+  def self.edit_grid
     model = Sketchup.active_model
+    model.select_tool(nil)
+
     objs = initial_selection(model, "grid")
     return unless objs
-
-    # Show the interface
-    input = Prompt.show_rotation_prompt
     
-    return unless input
+    model.start_operation("Edit Grid", true)
     
-    model.start_operation("Edit Grid rotation", true)
-    # Set group properties
+    # set group properties
     objs.each do |obj|
-      obj.set_attribute(DICTIONARY, :rotation, input)
+      curr_bbox, others = Geometry.get_grid_param_from_group(obj)
+
+      bbox = Geom::BoundingBox.new
+      bbox.add([others[:fixed_bbox_min], others[:fixed_bbox_max]])
+
+      bbox, others = Prompt.get_grid_by_prompt(bbox, others[:grid_type].to_s, others)
+  
+      unless others.nil?
+        # Create grid
+        grid = Geometry::Grid.new(bbox, others)
+        
+        # Save info
+        Geometry.generate_grid_group(grid)
+  
+        UI.messagebox("Done!")
+        obj.erase!
+      else
+        UI.messagebox("Calculation Failed.")
+        return
+      end
+      
     end
     model.selection.clear
     model.commit_operation

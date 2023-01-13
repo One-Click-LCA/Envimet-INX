@@ -10,7 +10,7 @@ module Envimet::EnvimetInx
         "equidistant"
       ]
       
-      grid_type = Geometry::Grid::GRID_TYPE.values
+      grid_type = Geometry::Grid::GRID_TYPE
 
       options = [grid_type.join("|")]
 
@@ -25,20 +25,31 @@ module Envimet::EnvimetInx
 
     # UI of the grid
     # @param bbox [Array] min point and max point
-    # @param type [String] grid type to use 1, 2 or 3
+    # @param type [String] grid type to use 'equidistant', 'telescope' or 'combined'
+    # @param type [Hash] default values (others grid info)
     # @return [Array, Hash] min point, max point, grid info 
-    def self.get_grid_by_prompt(bbox, type)
+    def self.get_grid_by_prompt(bbox, type, values=nil)
       message = nil
       others = nil
 
       if type == "equidistant"
+        defaults = [15, 3.0, 3.0, 3.0, 0.0]
+        unless values.nil?
+          defaults = [
+            values[:num_z],
+            values[:dim_x],
+            values[:dim_y],
+            values[:dim_z],
+            values[:rotation]
+          ]
+        end
+
         prompts = [
           "Num Z cells", 
           "Dim X(m)", 
           "Dim Y(m)", 
           "Dim Z(m)",
           "Rotation(0°-360° anticlockwise) [0.0 North]:"]
-        defaults = [15, 3.0, 3.0, 3.0, 0.0]
         results = UI.inputbox(prompts, 
           defaults, 
           "Create Equidistant Grid")
@@ -46,7 +57,7 @@ module Envimet::EnvimetInx
         if results
           num_z, dim_x, dim_y, dim_z, rotation = results
           others = { 
-            grid_type: Geometry::Grid::GRID_TYPE[type],
+            grid_type: type.to_sym,
             dim_x: dim_x,
             dim_y: dim_y,
             dim_z: dim_z,
@@ -55,40 +66,52 @@ module Envimet::EnvimetInx
           }
           return bbox, others
         end
-      elsif type == "telescope"
-        message = "Create Telescope Grid"
-      elsif type == "combined"
-        message = "Create Combined Grid"
-      end
+      else
+        type == "telescope" ? 
+          message = "Create Telescope Grid" :
+          message = "Create Combined Grid"
+      
+        defaults = [15, 3.0, 3.0, 3.0, 6.0, 8.0, 0.0]
+        unless values.nil?
+          defaults = [
+            values[:num_z],
+            values[:dim_x],
+            values[:dim_y],
+            values[:dim_z],
+            values[:telescope],
+            values[:start_telescope_height],
+            values[:rotation]
+          ]
+        end
 
-      prompts = [
-        "Num Z cells", 
-        "Dim X(m)", 
-        "Dim Y(m)", 
-        "Dim Z(m)", 
-        "Start Telescope Height", 
-        "Telescope",
-        "Rotation(0°-360° anticlockwise) [0.0 North]:"
-      ]
-      defaults = [15, 3.0, 3.0, 3.0, 6.0, 8.0, 0.0]
-      results = UI.inputbox(prompts, 
-        defaults, 
-        message)
+        prompts = [
+          "Num Z cells", 
+          "Dim X(m)", 
+          "Dim Y(m)", 
+          "Dim Z(m)", 
+          "Start Telescope Height", 
+          "Telescope",
+          "Rotation(0°-360° anticlockwise) [0.0 North]:"
+        ]
+        results = UI.inputbox(prompts, 
+          defaults, 
+          message)
 
-      if results
-        num_z, dim_x, dim_y, dim_z, \
-          start_telescope, telescope, rotation = results
-        others = { 
-          grid_type: Geometry::Grid::GRID_TYPE[type],
-          num_z: num_z,
-          dim_x: dim_x,
-          dim_y: dim_y,
-          dim_z: dim_z,
-          telescope: telescope,
-          start_telescope_height: start_telescope,
-          rotation: rotation
-        }
-        return bbox, others
+        if results
+          num_z, dim_x, dim_y, dim_z, \
+            start_telescope, telescope, rotation = results
+          others = { 
+            grid_type: type.to_sym,
+            num_z: num_z,
+            dim_x: dim_x,
+            dim_y: dim_y,
+            dim_z: dim_z,
+            telescope: telescope,
+            start_telescope_height: start_telescope,
+            rotation: rotation
+          }
+          return bbox, others
+        end
       end
     end
 
@@ -301,6 +324,26 @@ module Envimet::EnvimetInx
       
       if input && !input.join.empty?
         UI.messagebox("[ENVIMET]: Grid rotation updated.")
+        return input.first
+      end
+    end
+
+    # Show z cells prompt
+    def self.show_z_cells_prompt
+      prompts = [
+        "Number of z cells:"
+      ]
+      defaults = [15]
+      options = []
+
+      input = UI.inputbox(prompts, 
+        defaults,
+        options, 
+        "Edit Grid z cells", 
+        MB_OK)
+      
+      if input && !input.join.empty?
+        UI.messagebox("[ENVIMET]: Grid z cells updated.")
         return input.first
       end
     end

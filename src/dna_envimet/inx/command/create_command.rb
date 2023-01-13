@@ -255,14 +255,14 @@ module Envimet::EnvimetInx
   # Set grid from prompt
   # @param bbox [Geom::BoundingBox] of SKP.
   # @example
-  #   Envimet::EnvimetInx.create_grid(bbox, "1")
-  def self.create_grid(bbox, type)
+  #   Envimet::EnvimetInx.create_grid(bbox, "equidistant")
+  def self.create_grid(bbox, type, default=nil)
     model = Sketchup.active_model
     model.start_operation("Set Grid", true)
 
     model.select_tool(nil)
 
-    bbox, others = Prompt.get_grid_by_prompt(bbox, type)
+    bbox, others = Prompt.get_grid_by_prompt(bbox, type, default)
 
     unless others.nil?
       # Create grid

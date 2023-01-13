@@ -58,12 +58,12 @@ module Envimet::EnvimetInx
         useTelescoping_grid, verticalStretch, \
         startStretch, useSplitting, grid_Z = 0, 0, 0, 1, num_z
 
-        if grid.other_info[:grid_type] == "telescope"
+        if grid.other_info[:grid_type] == :telescope
           useTelescoping_grid = 1
           verticalStretch = grid.other_info[:telescope]
           startStretch = grid.other_info[:start_telescope_height]
           useSplitting = 0
-        elsif grid.other_info[:grid_type] == "combined"
+        elsif grid.other_info[:grid_type] == :combined
           useTelescoping_grid = 1
           verticalStretch = grid.other_info[:telescope]
           startStretch = grid.other_info[:start_telescope_height]

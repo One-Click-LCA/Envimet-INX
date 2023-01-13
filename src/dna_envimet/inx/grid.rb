@@ -3,11 +3,7 @@ module Envimet::EnvimetInx
     class Grid
 
       FIRST_CELLS = 5
-      GRID_TYPE = { 
-        "equidistant" => :equidistant, 
-        "telescope" => :telescope, 
-        "combined" => :combined 
-      }
+      GRID_TYPE = [:equidistant, :telescope, :combined]
 
       attr_reader :dim_x, :dim_y, :dim_z
       attr_accessor :other_info
@@ -60,50 +56,52 @@ module Envimet::EnvimetInx
         x_axis = []
         other_info[:num_x].times { |i| x_axis << \
           (i * dim_x) + other_info[:min_x] }
-          other_info[:x_axis] = x_axis
-        end
+        other_info[:x_axis] = x_axis
+      end
         
-        def set_y_axis
-          y_axis = []
-          other_info[:num_y].times { |j| y_axis << \
-            (j * dim_y) + other_info[:min_y] }
-            other_info[:y_axis] = y_axis
-          end
+      def set_y_axis
+        y_axis = []
+        other_info[:num_y].times { |j| y_axis << \
+          (j * dim_y) + other_info[:min_y] }
+        other_info[:y_axis] = y_axis
+      end
           
-          def set_grid_from_bbox(bbox)
-            min_x, min_y, min_z = bbox.min.to_a
-            max_x, max_y, max_z = bbox.max.to_a
-            
-            domain_x = max_x - min_x
-            domain_y = max_y - min_y
-            
-            num_x = (domain_x / dim_x).round
-            num_y = (domain_y / dim_y).round
-            
-            max_x = min_x + (num_x * dim_x)
-            max_y = min_y + (num_y * dim_y)
-            
-            other_info[:num_x] = num_x
-            other_info[:num_y] = num_y
-            
-            other_info[:min_x] = min_x
-            other_info[:min_y] = min_y
-            
-            other_info[:max_x] = max_x
-            other_info[:max_y] = max_y
-          end
-          
+      def set_grid_from_bbox(bbox)
+        min_x, min_y, min_z = bbox.min.to_a
+        max_x, max_y, max_z = bbox.max.to_a
+        
+        domain_x = max_x - min_x
+        domain_y = max_y - min_y
+        
+        num_x = (domain_x / dim_x).round
+        num_y = (domain_y / dim_y).round
+        
+        max_x = min_x + (num_x * dim_x)
+        max_y = min_y + (num_y * dim_y)
+        
+        other_info[:num_x] = num_x
+        other_info[:num_y] = num_y
+        
+        other_info[:min_x] = min_x
+        other_info[:min_y] = min_y
+        
+        other_info[:max_x] = max_x
+        other_info[:max_y] = max_y
 
+        other_info[:fixed_bbox_min] = bbox.min
+        other_info[:fixed_bbox_max] = bbox.max
+      end
+          
       def set_sequence
         # based on type get the sequence
         case (other_info[:grid_type])
-        when GRID_TYPE["equidistant"]
+        when :equidistant
           other_info[:sequence] = get_equidistant_sequence(
             other_info[:num_z]).map(&:to_f)
-        when GRID_TYPE["telescope"]
+        when :telescope
           other_info[:sequence] = get_telescope_sequence(
             other_info[:num_z]).map(&:to_f)
-        when GRID_TYPE["combined"]
+        when :combined
           other_info[:sequence] = get_combined_sequence(
             other_info[:num_z]).map(&:to_f)
         else
@@ -222,10 +220,14 @@ module Envimet::EnvimetInx
         get_base_grid(grid))
 
       # save info
+      group.set_attribute(DICTIONARY, :fixed_bbox_max, grid.other_info[:fixed_bbox_max])
+      group.set_attribute(DICTIONARY, :fixed_bbox_min, grid.other_info[:fixed_bbox_min])
+
       group.set_attribute(DICTIONARY, :type, "grid")
-      group.set_attribute(DICTIONARY, :grid_type, 
-        grid.other_info[:grid_type].to_s)
+      group.set_attribute(DICTIONARY, :grid_type, grid.other_info[:grid_type].to_s)
       group.set_attribute(DICTIONARY, :num_z, grid.other_info[:num_z])
+      group.set_attribute(DICTIONARY, :num_y, grid.other_info[:num_y])
+      group.set_attribute(DICTIONARY, :num_x, grid.other_info[:num_x])
       group.set_attribute(DICTIONARY, :dim_x, grid.dim_x.to_m)
       group.set_attribute(DICTIONARY, :dim_y, grid.dim_y.to_m)
       group.set_attribute(DICTIONARY, :dim_z, grid.dim_z.to_m)
@@ -239,9 +241,9 @@ module Envimet::EnvimetInx
         grid.other_info[:start_telescope_height])
     end
 
-    def self.create_grid_from_group(group)
+    def self.get_grid_param_from_group(group)
       others = {}
-      # save specific info
+      # get info from dict
       attrdicts = group.attribute_dictionaries
       dict = attrdicts[DICTIONARY]
       return if dict.nil?
@@ -250,6 +252,14 @@ module Envimet::EnvimetInx
         others[k.to_sym] = v
       end
       bbox = group.bounds
+
+      others[:grid_type] = others[:grid_type].to_sym
+
+      return bbox, others
+    end
+
+    def self.create_grid_from_group(group)
+      bbox, others = get_grid_param_from_group(group)
 
       # Shift to get centroid
       dim_x = group.get_attribute(DICTIONARY, :dim_x)

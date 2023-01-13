@@ -89,14 +89,13 @@ module Envimet::EnvimetInx
     toolbar.add_separator
 
     # Edit
-
-    # edit grid rotation
-    cmd = UI::Command.new("Edit Grid rotation") do
-      edit_grid_rotation
+    # edit grid
+    cmd = UI::Command.new("Edit Grid") do
+      edit_grid
     end
-    cmd.tooltip = "Edit Grid rotation"
-    cmd.status_bar_text = "Edit grid orientation (Envimet North)."
-    cmd.small_icon = cmd.large_icon = "res/icon/rotation.png"
+    cmd.tooltip = "Edit Grid"
+    cmd.status_bar_text = "Edit grid."
+    cmd.small_icon = cmd.large_icon = "res/icon/edit_grid.png"
     toolbar = toolbar.add_item(cmd)
 
     # edit building

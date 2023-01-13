@@ -106,12 +106,18 @@ module Envimet::EnvimetInx
         dim_x = grp.get_attribute(DICTIONARY, :dim_x)
         dim_y = grp.get_attribute(DICTIONARY, :dim_y)
         dim_z = grp.get_attribute(DICTIONARY, :dim_z)
+        num_x = grp.get_attribute(DICTIONARY, :num_x) + 1
+        num_y = grp.get_attribute(DICTIONARY, :num_y) + 1
+        num_z = grp.get_attribute(DICTIONARY, :num_z)
         gtype = grp.get_attribute(DICTIONARY, :grid_type)
         rotation = grp.get_attribute(DICTIONARY, :rotation)
         details = [
           "DIM.X: #{dim_x}",
-          "DIM.Y: #{dim_z}",
+          "DIM.Y: #{dim_y}",
           "DIM.Z: #{dim_z}",
+          "X: #{num_x}",
+          "Y: #{num_y}",
+          "Z: #{num_z}",
           "ROTATION: #{rotation}",
           "TYPE: #{gtype}"
         ].join(" | ")
