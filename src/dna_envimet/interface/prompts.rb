@@ -78,8 +78,8 @@ module Envimet::EnvimetInx
             values[:dim_x],
             values[:dim_y],
             values[:dim_z],
-            values[:telescope],
             values[:start_telescope_height],
+            values[:telescope],
             values[:rotation]
           ]
         end
