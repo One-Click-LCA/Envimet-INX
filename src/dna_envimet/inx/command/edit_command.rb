@@ -170,7 +170,6 @@ module Envimet::EnvimetInx
         obj.erase!
       else
         UI.messagebox("Calculation Failed.")
-        return
       end
       
     end

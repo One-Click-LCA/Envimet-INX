@@ -277,7 +277,6 @@ module Envimet::EnvimetInx
         "#{grid.other_info[:num_z]}.")
     else
       UI.messagebox("Calculation Failed.")
-      return
     end
 
     model.commit_operation
