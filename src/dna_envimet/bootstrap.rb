@@ -18,6 +18,7 @@ module Envimet::EnvimetInx
   Sketchup.require 'dna_envimet/interface/selection_observer'
   Sketchup.require 'dna_envimet/interface/app_observer'
   Sketchup.require 'dna_envimet/interface/entities_observer'
+  Sketchup.require 'dna_envimet/interface/visualizer'
   Sketchup.require 'dna_envimet/shared'
   Sketchup.require 'dna_envimet/ui_loader'
 end

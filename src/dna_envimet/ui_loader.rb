@@ -164,6 +164,18 @@ module Envimet::EnvimetInx
     cmd.status_bar_text = "Select Envimet objects by type."
     cmd.small_icon = cmd.large_icon = "res/icon/search.png"
     toolbar = toolbar.add_item(cmd)
+
+    cmd = UI::Command.new("Preview entities") do 
+      model = Sketchup.active_model
+      model.select_tool(nil)
+  
+      viz = Visualizer.new
+      viz.enable
+    end
+    cmd.tooltip = "Preview entities"
+    cmd.status_bar_text = "Preview envimet entities."
+    cmd.small_icon = cmd.large_icon = "res/icon/visualize.png"
+    toolbar = toolbar.add_item(cmd)
     
     toolbar.add_separator
     

@@ -3,6 +3,28 @@ module Envimet::EnvimetInx
 
   DICTIONARY = "ENVIMET"
 
+  # Get all faces from entities.
+  # @example
+  #   faces = Envimet::EnvimetInx.walk_faces(entities)
+  def self.walk_faces( entities, transformation = Geom::Transformation.new )
+    faces = []
+    entities.each do |e|
+      if e.is_a?( Sketchup::Face )
+        faces << e.outer_loop.vertices.map do |vertex|
+          vertex.position.transform(transformation)
+        end
+      elsif e.is_a?( Sketchup::Group )
+        faces.concat( walk_faces( e.entities, transformation *
+          e.transformation ) )
+      elsif e.is_a?( Sketchup::ComponentInstance )
+        faces.concat( walk_faces( e.definition.entities, transformation *
+          e.transformation ) )
+      end
+    end
+    
+    faces
+  end
+
   # Read configuration settings and return them as Ruby Hash.
   # @example
   #   Envimet::EnvimetInx.load_settings
@@ -24,7 +46,7 @@ module Envimet::EnvimetInx
 
   # Get envimet group from current skp model
   # @example
-  #   Envimet::EnvimetInx..collect_envimet_type "building"
+  #   Envimet::EnvimetInx.collect_envimet_type "building"
   def self.collect_envimet_type(type)
     ents = Sketchup.active_model.entities
     ents.grep(Sketchup::Group).select do |grp| 
