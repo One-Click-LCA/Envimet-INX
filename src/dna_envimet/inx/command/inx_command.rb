@@ -66,11 +66,14 @@ module Envimet::EnvimetInx
       x, y, code,
       name="SKP PLANT3D")
     centroid = cmp.bounds.center
-    pixel_x = grid.other_info[:x_axis].find_index { |n| n > centroid.x + x }
-    pixel_y = grid.other_info[:y_axis].find_index { |n| n > centroid.y + y }
+    extended_grid_x_axis = grid.other_info[:x_axis] << grid.other_info[:x_axis].last + grid.dim_x
+    extended_grid_y_axis = grid.other_info[:y_axis] << grid.other_info[:y_axis].last + grid.dim_y
 
-    if (pixel_x.nil? || pixel_x == 0) || 
-      (pixel_y.nil? || pixel_y == 0)
+    pixel_x = extended_grid_x_axis.find_index { |n| n >= centroid.x + x }
+    pixel_y = extended_grid_y_axis.find_index { |n| n >= centroid.y + y }
+
+    if (pixel_x.nil?) || 
+      (pixel_y.nil?)
       return
     end
 
@@ -105,6 +108,10 @@ module Envimet::EnvimetInx
       components.each do |cmp|
         pixel = create_pixel_from_component(cmp, grid, x, y, name, name)
         next unless pixel
+        
+        # Envimet bug workaround
+        pixel.i = pixel.i - 1
+        pixel.j = pixel.j - 1
 
         list << pixel
       end
