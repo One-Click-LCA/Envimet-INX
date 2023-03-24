@@ -24,7 +24,7 @@ Sketchup.require 'extensions'
 
 module Envimet
   module EnvimetInx
-    ENVIMET_VERSION = "2.1.0"
+    ENVIMET_VERSION = "2.1.1"
 
     unless file_loaded?(__FILE__)
       PLUGIN_ID = File.basename(__FILE__, ".rb")
