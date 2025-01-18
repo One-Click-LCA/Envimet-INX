@@ -2,8 +2,6 @@
 # ---------------------------------------------------------------------
 # Envimet INX: A plugin for Sketchup to write model for ENVI_MET.
 #
-# Copyright (C) 2022 ENVI-met GmbH <info@envi-met.com>
-#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
