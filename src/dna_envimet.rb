@@ -32,8 +32,7 @@ module Envimet
 
       ex.description = "ENVI_MET inx 2.5D plugin for SketchUp."
       ex.version = ENVIMET_VERSION
-      ex.copyright   = "ENVI-met GmbH <info@envi-met.com>"
-      ex.creator = "Antonello Di Nunzio <antonello.dinunzio@envi-met.com>"
+      ex.creator = "AntonelloDN <plugin@antonellodinunzio.online>"
 
       Sketchup.register_extension(ex, true)
 
