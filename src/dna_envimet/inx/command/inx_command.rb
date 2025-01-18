@@ -12,14 +12,14 @@ module Envimet::EnvimetInx
 
     # Select all
     visible_grp = self.collect_envimet_type("building")
-    
+
     # Hide other entities
     ents_to_hide = self.hide_all_except(visible_grp)
 
     # Initialize Intersection
     intersection = Intersection.new
-    pts = [] 
-    params = [] 
+    pts = []
+    params = []
 
     visible_grp.each do |grp|
       partial_pts, partial_params = intersection.get_inteserction(grid, grp, "building")
@@ -62,7 +62,7 @@ module Envimet::EnvimetInx
   end
 
   # Get pixel from component
-  def self.create_pixel_from_component(cmp, grid, 
+  def self.create_pixel_from_component(cmp, grid,
       x, y, code,
       name="SKP PLANT3D")
     centroid = cmp.bounds.center
@@ -72,16 +72,16 @@ module Envimet::EnvimetInx
     pixel_x = extended_grid_x_axis.find_index { |n| n >= centroid.x + x }
     pixel_y = extended_grid_y_axis.find_index { |n| n >= centroid.y + y }
 
-    if (pixel_x.nil?) || 
+    if (pixel_x.nil?) ||
       (pixel_y.nil?)
       return
     end
 
-    pixel = Pixel.new(name, 
-      code, 
-      pixel_x, 
+    pixel = Pixel.new(name,
+      code,
+      pixel_x,
       pixel_y)
-    
+
     pixel
   end
 
@@ -95,7 +95,7 @@ module Envimet::EnvimetInx
       return
     end
     list = []
-    
+
     # Select all receptor
     receptor_grps = self.collect_envimet_type("receptor")
 
@@ -108,7 +108,7 @@ module Envimet::EnvimetInx
       components.each do |cmp|
         pixel = create_pixel_from_component(cmp, grid, x, y, name, name)
         next unless pixel
-        
+
         # Envimet bug workaround
         pixel.i = pixel.i - 1
         pixel.j = pixel.j - 1
@@ -129,7 +129,7 @@ module Envimet::EnvimetInx
       return
     end
     tree = []
-    
+
     # Select all plat3d
     plant3d_grps = self.collect_envimet_type("plant3d")
 
@@ -163,14 +163,14 @@ module Envimet::EnvimetInx
 
     # Select all
     visible_grp = self.collect_envimet_type(type)
-    
+
     # Hide other entities
     ents_to_hide = self.hide_all_except(visible_grp)
 
     # Initialize Intersection
     intersection = Intersection.new
-    pts = [] 
-    params = [] 
+    pts = []
+    params = []
 
     visible_grp.each do |grp|
       partial_pts, partial_params = intersection.get_inteserction(grid, grp, type)
@@ -190,14 +190,14 @@ module Envimet::EnvimetInx
     id_matrix = Geometry::Grid.base_matrix_2d(num_x, num_y, default_mat)
 
     unless pts.empty? || params.empty?
-      id_matrix = intersection.get_matrix(intersection_id, 
+      id_matrix = intersection.get_matrix(intersection_id,
         grid, id_matrix, text=true)
     end
 
     # Add the matrix to wrapper class variable
-    @@preparation.add_value(symbol, 
+    @@preparation.add_value(symbol,
       intersection.get_envimet_matrix(id_matrix))
-    
+
     # Show other entities
     ents_to_hide.each { |e| e.visible = true }
   end
@@ -215,14 +215,14 @@ module Envimet::EnvimetInx
 
     # Select all
     visible_grp = self.collect_envimet_type("terrain")
-    
+
     # Hide other entities
     ents_to_hide = self.hide_all_except(visible_grp)
 
     # Initialize Intersection
     intersection = Intersection.new
-    pts = [] 
-    params = [] 
+    pts = []
+    params = []
 
     visible_grp.each do |grp|
       partial_pts, partial_params = intersection.get_inteserction(grid, grp, "terrain")
@@ -238,7 +238,7 @@ module Envimet::EnvimetInx
 
     # Read the default material and go ahead with intersections
     top_matrix = Geometry::Grid.base_matrix_2d(num_x, num_y, 0)
-    
+
     unless pts.empty? || params.empty?
       top_matrix = intersection.get_matrix(intersection_top, grid, top_matrix)
     end
@@ -256,24 +256,24 @@ module Envimet::EnvimetInx
     selection = model.selection
 
     # Get existing envimet grids
-    objs = selection.to_a.select do |e| 
+    objs = selection.to_a.select do |e|
       e.is_a?(Sketchup::Group) && \
       e.get_attribute(DICTIONARY, :type) == "grid"
     end
-    
+
     # No selection and no grids
     if selection.to_a.empty? || objs.empty?
       UI.messagebox("Please, select an envimet grid.")
       return
     end
-    
+
     # Just one grid allowed
     if objs.length > 1
       UI.messagebox("Please, select just one " \
         "envimet grid.")
       return
     end
-    
+
     # georeferenced check
     unless model.georeferenced?
       UI.messagebox("Model is not georeferenced.\n" \
@@ -304,7 +304,7 @@ module Envimet::EnvimetInx
     set_dem_matrix
     true
   end
-  
+
   # Get file name
   # @example
   #   Envimet::EnvimetInx.get_default_file_name
@@ -327,9 +327,7 @@ module Envimet::EnvimetInx
     # Initialize Inx class
     inx = IO::Inx.new
 
-    # Fast validation
-    validation = @@preparation.get_value(:grid)\
-      .other_info[:x_axis].empty?
+    validation = @@preparation.get_value(:grid).other_info[:x_axis].empty?
 
     unless validation
       doc = inx.create_xml(@@preparation)
@@ -340,7 +338,7 @@ module Envimet::EnvimetInx
         return
       end
 
-      full_path = UI.savepanel(title = "Save Envimet INX", 
+      full_path = UI.savepanel(title = "Save Envimet INX",
         filename = "#{get_default_file_name}.INX")
       inx.write_xml(doc, full_path) unless full_path.nil?
     end

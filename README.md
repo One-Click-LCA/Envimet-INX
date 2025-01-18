@@ -7,6 +7,8 @@ A plugin for Sketchup to write *.inx files for ENVI_MET.
 Please, see [WiKi](https://github.com/ENVI-coding/Envimet-INX/wiki)
 
 # SKP Versions
+* SKP 2024
+* SKP 2023
 * SKP 2022
 * SKP 2021
 

@@ -1,19 +1,25 @@
 module Envimet::EnvimetInx
   module IO
     class Inx
-      Sketchup.require "rexml/document"
+
+      if Sketchup.version.to_i > 23
+        require "rexml/document"
+      else
+        SketchUp.require "rexml/document"
+      end
+
       include REXML
 
-      def create_childs(root, 
-          element, 
-          childs, 
+      def create_childs(root,
+          element,
+          childs,
           attributes = {})
         base_element = Element.new(element)
 
         childs.each do |k, v|
           child_element = Element.new(k)
           child_element.text = v
-          base_element.add_element(child_element, 
+          base_element.add_element(child_element,
             attributes)
         end
 
@@ -24,7 +30,7 @@ module Envimet::EnvimetInx
         if envimet_object_validation(preparation)
           return
         end
-        
+
         # get envimet objects
         grid = preparation.get_value(:grid)
         location = preparation.get_value(:location)
@@ -46,10 +52,10 @@ module Envimet::EnvimetInx
         num_x = grid.other_info[:num_x]
         num_y = grid.other_info[:num_y]
         num_z = grid.other_info[:num_z]
-        attribute_2d = { 
-          "type" => "matrix-data", 
-          "dataI" => num_x, 
-          "dataJ" => num_y 
+        attribute_2d = {
+          "type" => "matrix-data",
+          "dataI" => num_x,
+          "dataJ" => num_y
         }
 
         doc = Document.new
@@ -70,60 +76,60 @@ module Envimet::EnvimetInx
           useSplitting = 1
         end
 
-        header = { 
-          "filetype" => "INPX ENVI-met Area Input File", 
-          "version" => "440", 
-          "revisiondate" => Time.now, 
-          "remark" => "Created with Envimet::EnvimetInx", 
-          "checksum" => "6104088", 
-          "encryptionlevel" => "0" 
+        header = {
+          "filetype" => "INPX ENVI-met Area Input File",
+          "version" => "440",
+          "revisiondate" => Time.now,
+          "remark" => "Created with Envimet::EnvimetInx",
+          "checksum" => "6104088",
+          "encryptionlevel" => "0"
         }
-        base_data = { 
-          "modelDescription" => "A brave new area", 
-          "modelAuthor" => " ", 
-          "modelcopyright" => "The creator or distributor is responsible for following Copyright Laws" 
+        base_data = {
+          "modelDescription" => "A brave new area",
+          "modelAuthor" => " ",
+          "modelcopyright" => "The creator or distributor is responsible for following Copyright Laws"
         }
-        model_geometry = { 
-          "grids-I" => num_x, 
-          "grids-J" => num_y, 
-          "grids-Z" => grid_Z, 
-          "dx" => grid.dim_x.to_m, 
-          "dy" => grid.dim_y.to_m, 
-          "dz-base" => grid.dim_z.to_m, 
-          "useTelescoping_grid" => useTelescoping_grid, 
-          "useSplitting" => useSplitting, 
-          "verticalStretch" => verticalStretch, 
-          "startStretch" => startStretch, 
-          "has3DModel" => "0", 
+        model_geometry = {
+          "grids-I" => num_x,
+          "grids-J" => num_y,
+          "grids-Z" => grid_Z,
+          "dx" => grid.dim_x.to_m,
+          "dy" => grid.dim_y.to_m,
+          "dz-base" => grid.dim_z.to_m,
+          "useTelescoping_grid" => useTelescoping_grid,
+          "useSplitting" => useSplitting,
+          "verticalStretch" => verticalStretch,
+          "startStretch" => startStretch,
+          "has3DModel" => "0",
           "isFull3DDesign" => "0"
         }
         nesting_area = {
-          "numberNestinggrids" => "0", 
-          "soilProfileA" => "000000", 
+          "numberNestinggrids" => "0",
+          "soilProfileA" => "000000",
           "soilProfileB" => "000000"
         }
         location_data = {
           "modelRotation" => grid.other_info[:rotation].nil? ? \
-            0.0 : grid.other_info[:rotation], 
-          "projectionSystem" => "UTM", 
-          "realworldLowerLeft_X" => location.utm[:x], 
-          "realworldLowerLeft_Y" => location.utm[:y], 
-          "locationName" => location.name, 
+            0.0 : grid.other_info[:rotation],
+          "projectionSystem" => "UTM",
+          "realworldLowerLeft_X" => location.utm[:x],
+          "realworldLowerLeft_Y" => location.utm[:y],
+          "locationName" => location.name,
           "location_Longitude" => location.longitude.nil? ? \
-            0.0 : location.longitude, 
+            0.0 : location.longitude,
           "location_Latitude" => location.latitude.nil? ? \
             0.0 : location.latitude,
-          "locationTimeZone_Name" => " ", 
-          "locationTimeZone_Longitude" => location.reference_longitude 
+          "locationTimeZone_Name" => " ",
+          "locationTimeZone_Longitude" => location.reference_longitude
         }
         default_settings = {
-          "commonWallMaterial" => preparation.materials['building']['DEFAULT'], 
+          "commonWallMaterial" => preparation.materials['building']['DEFAULT'],
           "commonRoofMaterial" => preparation.materials['building']['DEFAULT']
         }
-        buildings_2D = { 
-          "zTop" => top_matrix, 
-          "zBottom" => bottom_matrix, 
-          "buildingNr" => id_matrix, 
+        buildings_2D = {
+          "zTop" => top_matrix,
+          "zBottom" => bottom_matrix,
+          "buildingNr" => id_matrix,
           "fixedheight" => zero_matrix
          }
         simpleplants_2D = { "ID_plants1D" => plant2d_matrix }
@@ -131,79 +137,79 @@ module Envimet::EnvimetInx
         dem = { "terrainheight" => terrain_matrix }
         source_2D = { "ID_sources" => source_matrix }
 
-        create_childs(root, 
-          "Header", 
+        create_childs(root,
+          "Header",
           header)
 
-        create_childs(root, 
-          "baseData", 
+        create_childs(root,
+          "baseData",
           base_data)
 
-        create_childs(root, 
-          "modelGeometry", 
+        create_childs(root,
+          "modelGeometry",
           model_geometry)
 
-        create_childs(root, 
-          "nestingArea", 
+        create_childs(root,
+          "nestingArea",
           nesting_area)
 
-        create_childs(root, 
-          "locationData", 
+        create_childs(root,
+          "locationData",
           location_data)
 
-        create_childs(root, 
-          "defaultSettings", 
+        create_childs(root,
+          "defaultSettings",
           default_settings)
 
-        create_childs(root, 
+        create_childs(root,
           "buildings2D",
-           buildings_2D, 
+           buildings_2D,
            attribute_2d)
-        
-        create_childs(root, 
-          "simpleplants2D", 
-          simpleplants_2D, 
+
+        create_childs(root,
+          "simpleplants2D",
+          simpleplants_2D,
           attribute_2d)
 
         unless plant3d == []
           plant3d.each do |plt|
-            plant3d_info = { 
-              "rootcell_i" => plt.i, 
-              "rootcell_j" => plt.j, 
-              "rootcell_k" => 0, 
-              "plantID" => plt.code, 
-              "name" => plt.name, 
+            plant3d_info = {
+              "rootcell_i" => plt.i,
+              "rootcell_j" => plt.j,
+              "rootcell_k" => 0,
+              "plantID" => plt.code,
+              "name" => plt.name,
               "observe" => 0 }
-            create_childs(root, 
-              "threeDimplants", 
+            create_childs(root,
+              "threeDimplants",
               plant3d_info)
           end
         end
 
         unless receptor == []
           receptor.each do |pix|
-            receptors_info = { 
-              "cell_i" => pix.i, 
-              "cell_j" => pix.j, 
-              "name" => pix.code 
+            receptors_info = {
+              "cell_i" => pix.i,
+              "cell_j" => pix.j,
+              "name" => pix.code
             }
-            create_childs(root, 
-              "Receptors", 
+            create_childs(root,
+              "Receptors",
               receptors_info)
           end
         end
 
-        create_childs(root, 
-          "soils2D", 
-          soils_2D, 
+        create_childs(root,
+          "soils2D",
+          soils_2D,
           attribute_2d)
-        create_childs(root, 
-          "dem", 
-          dem, 
+        create_childs(root,
+          "dem",
+          dem,
           attribute_2d)
-        create_childs(root, 
-          "sources2D", 
-          source_2D, 
+        create_childs(root,
+          "sources2D",
+          source_2D,
           attribute_2d)
 
         unless building == []
@@ -218,12 +224,12 @@ module Envimet::EnvimetInx
             name = bld.get_attribute("ENVIMET", :name)
             bsf = bld.get_attribute("ENVIMET", :bsf)
 
-            building_info = { 
-              "BuildingInternalNr" => uuid, 
-              "BuildingName" => name, 
-              "BuildingWallMaterial" => wall_material, 
-              "BuildingRoofMaterial" => roof_material, 
-              "BuildingFacadeGreening" => green_wall, 
+            building_info = {
+              "BuildingInternalNr" => uuid,
+              "BuildingName" => name,
+              "BuildingWallMaterial" => wall_material,
+              "BuildingRoofMaterial" => roof_material,
+              "BuildingFacadeGreening" => green_wall,
               "BuildingRoofGreening" => green_roof,
               "ObserveBPS" => bsf
             }
@@ -245,7 +251,7 @@ module Envimet::EnvimetInx
         adapt_xml_text(out)
 
         # this because inx is not a standard xml
-        temp = out.split("\n").reject { |c| c.empty? } 
+        temp = out.split("\n").reject { |c| c.empty? }
 
         # create file
         File.open(full_path, "w") do |file|

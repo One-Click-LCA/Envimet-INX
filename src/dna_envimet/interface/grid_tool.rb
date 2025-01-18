@@ -40,7 +40,7 @@ module Envimet::EnvimetInx
       if picked_first_point?
 
         set_bbox_from_points(picked_points)
-        
+
         selection = Prompt.get_grid_selection
         if selection.nil?
           update_ui
@@ -48,7 +48,7 @@ module Envimet::EnvimetInx
           return
         end
 
-        Envimet::EnvimetInx.create_grid(@boundary_box, 
+        Envimet::EnvimetInx.create_grid(@boundary_box,
           selection)
 
         reset_tool
@@ -60,9 +60,9 @@ module Envimet::EnvimetInx
       view.invalidate
     end
 
-    CURSOR_POINT = UI.create_cursor(File.join(PLUGIN_DIR, 
-      "res/tool_icon.png"), 0, 0)
-    
+    CURSOR_POINT = UI.create_cursor(File.join(PLUGIN_DIR,
+      "res/x.svg"), 0, 0)
+
     def onSetCursor
       UI.set_cursor(CURSOR_POINT)
     end
@@ -113,7 +113,7 @@ module Envimet::EnvimetInx
         view.line_width = 2
         view.line_stipple = "_"
         pt1, pt2 = points
-        view.draw(GL_LINE_LOOP, [[pt1.x, pt1.y], 
+        view.draw(GL_LINE_LOOP, [[pt1.x, pt1.y],
           [pt2.x, pt1.y], [pt2.x, pt2.y], [pt1.x, pt2.y]])
       end
     end
